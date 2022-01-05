@@ -1,7 +1,8 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Card, Container, Row, Col} from 'react-bootstrap'
+import {Button,} from 'react-bootstrap'
 import {useState} from 'react'
+import CardText from './Card'
 
 function App() {
   const [data, setData] = useState({
@@ -9,16 +10,18 @@ function App() {
     author: "Someone",
     synopsis: "Events",
   })
-  
-  function handleSubmit(e) {
-    var bookTitle = document.getElementById('title').value
-    var bookAuthor = document.getElementById('author').value
-    var bookSynopsis = document.getElementById('synopsis').value
+  function handleChange(e) {
     e.preventDefault();
     setData({
-      title: bookTitle,
-      author: bookAuthor,
-      synopsis: bookSynopsis,
+      ...data,
+      [e.target.name]: e.target.value
+    })
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+  setData({
+      ...data,
+      [e.target.name]: e.target.value
     })
   }
   return (
@@ -26,25 +29,17 @@ function App() {
       <header className="App-header">
         <form onSubmit={handleSubmit}>
         <h1>Title</h1>
-        <input type = 'text' id="title" name="title" defaultValue={data.title}></input>
+        <input type = 'text' id="title" name="title" defaultValue={data.title} onChange={handleChange}/>
         <h1>Author</h1>
-        <input type = 'text' id="author" name="author" defaultValue ={data.author}></input>
+        <input type = 'text' id="author" name="author" defaultValue ={data.author} onChange={handleChange}/>
         <h1>Synopsis</h1>
-        <input type = 'text' id="synopsis" name="synopsis" defaultValue={data.synopsis}></input>
+        <input type = 'text' id="synopsis" name="synopsis" defaultValue={data.synopsis} onChange={handleChange}/>
         <br></br>
         <Button as='input' type = 'submit'></Button>
         </form>
        
       </header>
-      <Container>
-      <Card>
-        <Card.Body>
-          <Card.Title>{data.title}</Card.Title>
-          <Card.Text>{data.author}</Card.Text>
-          <Card.Text>{data.synopsis}</Card.Text>
-        </Card.Body>
-      </Card>
-      </Container>
+      <CardText props={data} />
     </div>
   );
 }
